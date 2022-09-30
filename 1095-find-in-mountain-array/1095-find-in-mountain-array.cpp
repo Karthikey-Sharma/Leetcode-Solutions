@@ -61,14 +61,9 @@ public:
         int peak = findPeak(mountainArr);
         if(target > mountainArr.get(peak)) return -1;
         int leftAns = binarySearch(mountainArr , target , peak);
-        cout << target << endl;
-        cout << mountainArr.get(peak) << endl;
-        cout << leftAns << "LeftAns" << endl;
         if(leftAns != -1) return leftAns;
         int rightAns = reverseBinarySearch(mountainArr , target , peak);
-        cout << rightAns << "right" << endl;
-        if(rightAns == -1) return -1;
-        else return rightAns;
+        return rightAns;
         
 
         
