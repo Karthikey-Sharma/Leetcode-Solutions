@@ -1,7 +1,7 @@
 class Solution {
     public int memo(String s ,int idx , int[] dp){
         if(idx == s.length()){
-            return 1;
+            return dp[idx] = 1;
         }
         if(dp[idx] != 0) return dp[idx];
         int ans = 0;
