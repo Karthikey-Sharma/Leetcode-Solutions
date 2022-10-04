@@ -1,23 +1,31 @@
 class Solution {
 public:
-     bool targetSumSubset(vector<int>&nums, int idx , int target , vector<vector<int>> &dp){
-        if(target == 0) return true;
-        if(idx >= nums.size() || target < 0){
-            return false;
-        }
-        
-        if(dp[idx][target] != -1) return dp[idx][target];
-        bool include = targetSumSubset(nums , idx + 1 , target - nums[idx] , dp);
-        bool exclude = targetSumSubset(nums , idx + 1 , target ,dp);
-        return dp[idx][target] = include | exclude;
-    }
     bool canPartition(vector<int>& nums) {
         int sum = 0;
-        for(int val : nums){
-            sum += val;
+        for(int val : nums) sum += val;
+        if(sum & 1) return false;
+        int target = sum / 2 ;
+        vector<vector<bool>> dp(nums.size() + 1 , vector<bool>(target + 1 , false));
+        for(int i = 0 ; i < dp.size() ; i++){
+            for(int j = 0 ; j <= target ; j++){
+                if(i == 0 && j == 0){
+                    dp[i][j] = true;
+                }else if(i == 0){
+                    dp[i][j] = false;
+                }else{
+                   if(dp[i - 1][j] == true){
+                       dp[i][j] = true;
+                   }else{
+                       int val = nums[i - 1];
+                       if(j >= val){
+                           if(dp[i - 1][j - val] == true){
+                               dp[i][j] = true;
+                           }
+                       }
+                   }
+                }
+            }
         }
-        vector<vector<int>> dp(nums.size() + 1 , vector<int>(sum/2 + 1 , -1));
-        if(sum & 1) return false; // odd
-        return targetSumSubset(nums , 0 , sum/2 ,dp);
+        return dp[nums.size()][target];
     }
 };
