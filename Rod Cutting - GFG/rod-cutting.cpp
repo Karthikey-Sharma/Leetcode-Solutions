@@ -11,23 +11,24 @@ using namespace std;
 class Solution{
   public:
     int cutRod(int price[], int n) {
-        vector<vector<int>> dp(n+1 , vector<int>(n + 1 , 0));
-        for(int i = 0 ; i < n ;i++){
+        vector<int> prev(n + 1 , 0);
+        vector<int> curr(n + 1, 0);
+        for(int i = 0 ; i <= n; i++){
+            prev[i] = i * price[0];
+        }
+        for(int i = 1 ; i < n ;i++){
             for(int j = 0 ; j <= n ; j++){
-                if(i == 0){
-                  dp[i][j] = j * price[i];
-                  continue;
-             }
               int take = INT_MIN;
               int rodLength = i + 1;
               if(rodLength <= j){
-                  take = dp[i][j-rodLength]+ price[i];
+                  take = curr[j-rodLength]+ price[i];
               }
-              int notTake = dp[i - 1][j];
-              dp[i][j] = max(take , notTake);
+              int notTake = prev[j];
+              curr[j] = max(take , notTake);
             }
+            prev = curr;
         }
-        return dp[n - 1][n];
+       return prev[n];
     }
 };
 
