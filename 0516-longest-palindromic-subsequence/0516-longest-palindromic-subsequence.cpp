@@ -1,6 +1,7 @@
 class Solution {
 public:
     int longestPalindromeSubseq(string s) {
+        /// same as lcs
         string text1 = s;
         reverse(s.begin() , s.end());
         string text2 = s;
