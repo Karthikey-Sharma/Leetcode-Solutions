@@ -1,22 +1,23 @@
 class Solution {
 public:
     int longestPalindromeSubseq(string s) {
-        /// same as lcs
-        string text1 = s;
-        reverse(s.begin() , s.end());
-        string text2 = s;
-        vector<vector<int>> dp(text1.size() + 1 , vector<int>(text2.size() + 1 , 0));
-        for(int i = dp.size() - 2 ; i >= 0 ; i--){
-            for(int j = dp[i].size() - 2 ; j >= 0 ; j--){
-                char ch1 = text1[i];
-                char ch2 = text2[j];
-                if(ch1 == ch2){
-                    dp[i][j] = 1 + dp[i + 1][j + 1];
+        // Pepcoding Solution's
+        vector<vector<int>> dp(s.size() , vector<int>(s.size() , 0));
+        for(int gap = 0 ; gap < s.size() ; gap++){
+            for(int i = 0 , j = gap ; j < dp.size() ; i++ , j++){
+                if(gap == 0){
+                    dp[i][j] = 1;
+                }else if(gap == 1){
+                    dp[i][j] = (s[i] == s[j]) ? 2 : 1;
                 }else{
-                    dp[i][j] = max(dp[i][j + 1] , dp[i + 1][j]);
+                    if(s[i] == s[j]){
+                        dp[i][j] = 2 + dp[i + 1][j - 1];
+                    }else{
+                        dp[i][j] = max(dp[i + 1][j] , dp[i][j - 1]);
+                    }
                 }
             }
         }
-        return dp[0][0];
+        return dp[0][s.size() - 1];
     }
 };
