@@ -1,22 +1,18 @@
 class Solution {
 public:
-    int longestCommonSubsequence(string s, string t) {
-        // Space Optimixation o(m)
-        int n = s.size();
-        int m = t.size();
-        vector<int> prev(m + 1 , 0);
-        vector<int> curr(m + 1, 0);
-        for(int i = 0 ; i <= n ; i++){
-            for(int j = 0 ; j <= m ; j++){
-                if(i == 0 || j == 0){
-                    prev[j] = 0 ;
-                    continue;
+    int longestCommonSubsequence(string text1, string text2) {
+        vector<vector<int>> dp(text1.size() + 1 , vector<int>(text2.size() + 1 , 0));
+        for(int i = dp.size() - 2 ; i >= 0 ; i--){
+            for(int j = dp[i].size() - 2 ; j >= 0 ; j--){
+                char ch1 = text1[i];
+                char ch2 = text2[j];
+                if(ch1 == ch2){
+                    dp[i][j] = 1 + dp[i + 1][j + 1];
+                }else{
+                    dp[i][j] = max(dp[i][j + 1] , dp[i + 1][j]);
                 }
-                if(s[i - 1] == t[j - 1]) curr[j] = 1 + prev[j - 1];
-                else curr[j] = max(prev[j], curr[j - 1]);
             }
-            prev = curr;
         }
-        return prev[m];
+        return dp[0][0];
     }
 };
