@@ -10,47 +10,49 @@ using namespace std;
 class Solution{
 public:
     int countWays(int N, string S){
-        string str1 = "";
-        string str2 = "";
-        
+        string operands = "";
+        string operators = "";
         for(int i = 0 ; i < S.size() ; i++){
-            if(i % 2 == 0) str1 += S[i];
-            else str2 += S[i];
+            if(i % 2 == 0) operands += S[i];
+            else operators += S[i];
         }
-        
-        int n = str1.size();
-        vector<vector<int>>t(n , vector<int>(n , 0));
-        vector<vector<int>> f(n , vector<int>(n , 0));
-        for (int gap = 0; gap < n; gap++) {
-          int si = 0, ei = gap;
-          while (ei < n) {
-            if (gap == 0) {
-              t[si][ei] = str1.at(si) == 'T' ? 1 : 0;
-              f[si][ei] = str1.at(si) == 'F' ? 1 : 0;
-            } else {
-              for (int cp = si; cp < ei; cp++) {
-                char sign = str2.at(cp);
-                if (sign == '&') {
-                  t[si][ei] += ((t[si][cp] % 1003) *( t[cp + 1][ei] % 1003)) % 1003;
-                  f[si][ei] += (((t[si][cp] % 1003 ) % 1003* (f[cp + 1][ei] % 1003) % 1003) % 1003+ ((f[si][cp]% 1003 )* t[cp + 1][ei] % 1003) % 1003
-                                + ((f[si][cp]% 1003) * (f[cp + 1][ei])% 1003))% 1003;
+        vector<vector<int>> dpt(operands.size() , vector<int>(operands.size())) ;
+        vector<vector<int>> dpf(operands.size() , vector<int>(operands.size()));
+        for(int gap = 0 ; gap < operands.size() ; gap++){
+            for(int i = 0 , j = gap ; j < operands.size() ; i++ , j++){
+                if(gap == 0){
+                    char ch = operands[i];
+                    if(ch == 'T'){
+                        dpt[i][j] = 1;
+                        dpf[i][j] = 0;
+                    }else{
+                        dpt[i][j] = 0;
+                        dpf[i][j] = 1;
+                    }
+                }else{
+                    for(int k = i ; k < j ; k++){
+                        char oprtr = operators[k];
+                        int ltc = dpt[i][k];
+                        int rtc = dpt[k + 1][j];
+                        int lfc = dpf[i][k];
+                        int rfc = dpf[k + 1][j];
+                        if(oprtr == '&'){
+                            dpt[i][j] =  (dpt[i][j]  % 1003 )+ (ltc * rtc) % 1003;
+                            dpf[i][j] = (dpf[i][j]  % 1003)  + (lfc * rtc + ltc * rfc + lfc * rfc) % 1003;
+                        }else if(oprtr == '|'){
+                            dpt[i][j] = (dpt[i][j]  % 1003)+ (ltc * rtc + lfc * rtc + ltc * rfc) % 1003;
+                            dpf[i][j] = (dpf[i][j]  % 1003)  + (lfc * rfc)  % 1003;
+                        }else{ // ^ (xor)
+                            dpt[i][j] = dpt[i][j] + (ltc * rfc + lfc * rtc) % 1003;
+                            dpf[i][j] = dpf[i][j] + (lfc * rfc + ltc * rtc) % 1003;
+                        }
+                    }
                 }
-                if (sign == '|') {
-                  t[si][ei] += (((t[si][cp]% 1003) * (t[cp + 1][ei]% 1003))% 1003 + ((t[si][cp]% 1003) * (f[cp + 1][ei]% 1003))% 1003
-                                + (f[si][cp] * t[cp + 1][ei]))% 1003;
-                  f[si][ei] += ((f[si][cp]) * (f[cp + 1][ei]))% 1003;
-                }
-                if (sign == '^') {
-                  t[si][ei] += ((t[si][cp] * f[cp + 1][ei])% 1003 + (f[si][cp] * t[cp + 1][ei])% 1003)% 1003;
-                  f[si][ei] += ((t[si][cp] * t[cp + 1][ei])% 1003 + (f[si][cp] * f[cp + 1][ei])% 1003)% 1003;
-                }
-              }
             }
-            si++;
-            ei++;
-          }
+            
         }
-        return (t[0][t[0].size() - 1])% 1003;
+        return dpt[0][operands.size() - 1] % 1003;
+        
     }
 };
 
