@@ -11,6 +11,11 @@ class Solution{
     public:
     int optimalSearchTree(int keys[], int freq[], int n)
     {
+        vector<int> psa(n);
+        psa[0] = freq[0];
+        for(int i = 1 ; i < n ; i++){
+            psa[i] = psa[i - 1] + freq[i];
+        }
         vector<vector<int>> dp(n , vector<int>(n , 0));
         for(int gap = 0 ; gap < n ; gap++){
             for(int i = 0 , j = gap ; j < dp.size() ; i++ , j++){
@@ -22,10 +27,7 @@ class Solution{
                     dp[i][j] = min(f1 + 2 * f2 , f2 + 2 * f1);
                 }else{
                     int minim = INT_MAX;
-                    int fs = 0;
-                    for(int x = i ; x <= j ; x++){
-                        fs += freq[x];
-                    }
+                    int fs = psa[j] - ( i == 0 ? 0 : psa[i - 1]);
                     for(int k = i ; k <= j ; k++){
                         int leftVal = (k == i ? 0 :  dp[i][k - 1]);
                         int rightVal = (k == j ? 0 :  dp[k + 1][j]);
