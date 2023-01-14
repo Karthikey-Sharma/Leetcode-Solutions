@@ -18,8 +18,8 @@ public:
         for(int i = 0 ; i < n ; i++){
             if(!pq.empty() && pq.top() < arr[i]){
                 steps += (arr[i] - pq.top());
-                pq.push(arr[i]);
                 pq.pop();
+                pq.push(arr[i]);
             }
             pq.push(arr[i]);
         }
