@@ -57,7 +57,7 @@ class Solution
                     entry = entry->next;
                     slow = slow->next;
                 }
-                return entry->data;
+                return slow->data;
             }
         }
         return -1;
