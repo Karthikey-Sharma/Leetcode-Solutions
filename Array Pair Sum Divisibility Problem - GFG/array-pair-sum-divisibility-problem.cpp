@@ -6,7 +6,7 @@ using namespace std;
 class Solution {
   public:
     bool canPair(vector<int> arr, int k) {
-        map<int , int> map;
+        unordered_map<int , int> map;
         for(int i = 0 ; i < arr.size() ; i++){
             int rem = (arr[i] + k) % k;
             map[rem]++;
