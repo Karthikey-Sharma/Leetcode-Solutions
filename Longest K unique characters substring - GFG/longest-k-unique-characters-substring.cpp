@@ -42,8 +42,15 @@ class Solution{
                 map[ch]--;
                 if(map[ch] == 0) {
                     map.erase(ch);
+                }
+                
+                if(map.size() > k){
+                    continue;
+                }else if(map.size() == k){
                     int len = i - j;
-                    max_len = (len , max_len);
+                    if(len > max_len){
+                        max_len = len;
+                    }
                     break;
                 }
             }
