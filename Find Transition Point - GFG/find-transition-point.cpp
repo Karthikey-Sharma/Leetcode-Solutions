@@ -22,16 +22,7 @@ int main() {
 
 
 int transitionPoint(int arr[], int n) {
-    int lo = 0;
-    int hi = n - 1;
-    while(lo < hi){
-        int mid = lo + (hi - lo) / 2;
-        if(arr[mid] == 0){
-            lo = mid + 1;
-        }else{
-            hi = mid;
-        }
-    }
-    if(arr[lo] != 1) return -1;
-    else return lo;
+    int idx = lower_bound(arr , arr + n , 1) - arr;
+    if(idx >= n) return -1;
+    else return idx;
 }
