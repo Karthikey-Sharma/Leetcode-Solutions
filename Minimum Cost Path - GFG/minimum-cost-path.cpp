@@ -33,8 +33,10 @@ int minimumCostPath(vector<vector<int>>& grid) {
         int u = node.second.first;
         int v = node.second.second;
 
-        pq.pop(); // Remove the processed node from the priority queue
+        pq.pop(); 
         
+        if (visited[u][v])
+            continue;
 
         visited[u][v] = true;
 
