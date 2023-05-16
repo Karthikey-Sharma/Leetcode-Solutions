@@ -10,7 +10,7 @@ class Solution{
   public:
     int minJumps(int arr[], int n){
         if(arr[0] == 0) return -1;
-        if(n <= 1) return 0;
+        if(n <= 1) return 1;
         int steps = arr[0];
         int maxReach = arr[0];
         int jumps = 1;
