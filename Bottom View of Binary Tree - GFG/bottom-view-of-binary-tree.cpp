@@ -97,7 +97,7 @@ class Solution {
   public:
     vector <int> bottomView(Node *root) {
         queue<pair<Node * , int>> q;
-        map<int , vector<int>> map;
+        map<int , int> map;
         q.push({root , 0});
         int maxLevel = 0;
         int minLevel = 0;
@@ -109,7 +109,7 @@ class Solution {
             int level = front.second;
             Node * node = front.first;
             
-            map[level].push_back(node->data);
+            map[level] = node->data;
             maxLevel = max(level , maxLevel);
             minLevel = min(level , minLevel);
             
@@ -122,10 +122,7 @@ class Solution {
         }
         vector<int> ans;
         for(int i = minLevel ; i <= maxLevel ; i++){
-            vector<int> a = map[i];
-            if(a.size() > 0){
-                ans.push_back(a[a.size() - 1]);
-            }
+            if(map.find(i) != map.end()) ans.push_back(map[i]);
         }
         return ans;
     }
