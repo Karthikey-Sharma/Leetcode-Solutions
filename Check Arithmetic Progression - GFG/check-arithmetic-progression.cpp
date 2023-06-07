@@ -9,12 +9,10 @@ class Solution{
     public:
     bool checkIsAP(int arr[], int n)
     {
-      sort(arr , arr + n);
-        int diff = arr[1] - arr[0];
+        sort(arr , arr + n);
+        int gap = arr[1] - arr[0];
         for(int i = 1 ; i < n ; i++){
-            int prev = arr[i - 1];
-            int curr = arr[i];
-            if(curr - prev != diff) return false;
+            if(arr[i] - arr[i - 1] != gap) return false;
         }
         return true;
         
